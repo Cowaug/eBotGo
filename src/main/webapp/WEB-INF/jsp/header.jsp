@@ -10,7 +10,7 @@
 <meta name="viewport"
       content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <link rel="icon"
-      href="https://cdn.discordapp.com/icons/602896661643001856/ea6f59bfa350778dba954afb02a536af.webp?size=128">
+      href="https://raw.githubusercontent.com/Cowaug/eBotGo/master/src/main/webapp/resources/icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-orange.min.css">
