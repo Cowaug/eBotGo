@@ -11,7 +11,11 @@
     <title>eBotGo - Login</title>
     <jsp:include page="header.jsp"/>
 </head>
-<body style="background-image: url('/resources/background.svg')">
+<body >
+<img src="https://raw.githubusercontent.com/Cowaug/ebot-site/master/src/main/webapp/images/Black_Man_Working_at_his_Laptop_on_the_Couch_Cartoon_Vector.svg"  style="
+    height:inherit;
+    width:inherit;"
+     alt="">
 <div style="text-align: center">
     <%
         if (request.getSession().getAttribute("username") != null) {
@@ -21,7 +25,7 @@
     <%
     } else {
     %>
-    <form style="max-width: 256px;padding: 16px;margin: 48px auto" class="mdc-elevation--z4" action="${pageContext.request.contextPath}/login" method="post">
+    <form style="max-width: 256px;padding: 16px;margin: 48px auto;background:white" class="mdc-elevation--z4" action="${pageContext.request.contextPath}/login" method="post">
         <div style="color: dimgray">Login to eBotGo</div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="user-id" name="user-id">
