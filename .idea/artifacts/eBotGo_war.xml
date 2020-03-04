@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="eBotGo:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/eBotGo_war</output-path>
+    <root id="archive" name="eBotGo_war.war">
+      <element id="artifact" artifact-name="eBotGo:war exploded" />
+    </root>
+  </artifact>
+</component>
