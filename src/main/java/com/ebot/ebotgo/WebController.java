@@ -21,8 +21,19 @@ public class WebController {
         return "home";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String viewLogin(ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("username") != null) {
+            return "redirect:"+(request.getHeader("referer") != null ? request.getHeader("referer") : "/");
+        }
+        modelMap.addAttribute("message", "Give me new password :>");
+        modelMap.addAttribute("color", "dimgray");
+        return "login";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String viewLoginPOST(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String viewLoginPOST(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
         try {
             // authentication
             String auth = JawMySQL.login(request.getParameter("user-id"),request.getParameter("password"));
@@ -30,20 +41,12 @@ public class WebController {
                 request.getSession().setAttribute("username", auth);
                 return "redirect:/" + (request.getSession().getAttribute("redirect") == null ? "" : request.getSession().getAttribute("redirect"));
             }
-            modelMap.addAttribute("message", "Wrong <strong>User ID</strong> or <strong>Password</strong><br><br>");
+            modelMap.addAttribute("message", "Forgot <strong>User ID</strong> or <strong>Password</strong>?");
         }catch (Exception ex){
-            System.out.println(ex.getMessage());
-            modelMap.addAttribute("message", "<strong>Server is under maintain :(</strong><br><br>");
+            System.out.println("Stmt error: "+ ex.getMessage());
+            modelMap.addAttribute("message", "<strong>Server is under maintain :(</strong>");
         }
-        return "login";
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String viewLogin(ModelMap modelMap, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("username") != null) {
-            return "redirect:"+(request.getHeader("referer") != null ? request.getHeader("referer") : "/");
-        }
+        modelMap.addAttribute("color", "darkred");
         return "login";
     }
 
@@ -51,6 +54,16 @@ public class WebController {
     public String viewLogout(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:" + (request.getParameter(REDIRECT_BACK) != null ? request.getParameter(REDIRECT_BACK) : "/");
+    }
+
+    @RequestMapping(value = "/forgot",method = RequestMethod.GET)
+    public String viewForgot(HttpServletRequest request) {
+        return "forgot";
+    }
+
+    @RequestMapping(value = "/forgot",method = RequestMethod.POST)
+    public String viewForgotPOST(HttpServletRequest request) {
+        return "forgot";
     }
 
     @RequestMapping(value = "/config")

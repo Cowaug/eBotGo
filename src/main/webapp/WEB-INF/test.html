@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-orange.min.css">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+<body>
+<form style="max-width: 256px;padding: 24px;background:white;" class="mdc-elevation--z4">
+    <div style="color: dimgray;font-size: large;margin-bottom: 8px;text-align: center">Login to eBotGo</div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input"
+                                                                                     type="text" id="user-id"
+                                                                                     name="user-id"><label
+            class="mdl-textfield__label" for="user-id">User ID</label></div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"><input class="mdl-textfield__input"
+                                                                                     type="password" id="password"
+                                                                                     name="password"><label
+            class="mdl-textfield__label" for="password">Password</label></div>
+    <br>
+    <div id="message" style="color: darkred;padding: 0 0 8px;text-align: center;height: 0;overflow-y: hidden">
+        "a<br>b<br>c<br>d<br>e<br>f<br>g<br>h<br>i<br>j<br>k<br>m<br>l"
+    </div>
+    <div id="btnLogin" style="text-align: center">
+        <button id="button" class="mdc-button mdc-button--outlined" style="color: dimgray;"
+                onclick="login(this)" ><span class="mdc-button__ripple"></span> Login
+        </button>
+        <a onclick="login()">hello</a>
+    </div>
+</form>
+<script>
+
+    function login() {
+        expandSection(document.getElementById("message"));
+    }
+
+</script>
+</body>
+</html>
