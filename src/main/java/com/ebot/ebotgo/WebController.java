@@ -1,5 +1,7 @@
 package com.ebot.ebotgo;
 
+
+import com.ebot.MikoBot.MainClass;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +17,10 @@ import java.io.IOException;
 public class WebController {
     public static String REDIRECT_BACK = "rdrct_bck";
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = {"/","/home"})
     public String viewHome(ModelMap modelMap, HttpServletRequest request) {
         modelMap.addAttribute("textBox1", request.getSession().getId());
+        MainClass.main(null);
         return "home";
     }
 
@@ -39,11 +42,11 @@ public class WebController {
             String auth = JawMySQL.login(request.getParameter("user-id"),request.getParameter("password"));
             if (auth !=null) {
                 request.getSession().setAttribute("username", auth);
-                return "redirect:/" + (request.getSession().getAttribute("redirect") == null ? "" : request.getSession().getAttribute("redirect"));
+                return "redirect:/" + (request.getSession().getAttribute(REDIRECT_BACK) == null ? "" : request.getSession().getAttribute(REDIRECT_BACK));
             }
             modelMap.addAttribute("message", "Forgot <strong>User ID</strong> or <strong>Password</strong>?");
         }catch (Exception ex){
-            System.out.println("Stmt error: "+ ex.getMessage());
+            System.out.println("Login error: "+ ex.getMessage());
             modelMap.addAttribute("message", "<strong>Server is under maintain :(</strong>");
         }
         modelMap.addAttribute("color", "darkred");
@@ -74,6 +77,18 @@ public class WebController {
             return "config";
         } else {
             session.setAttribute(REDIRECT_BACK, "config");
+            return "redirect:login";
+        }
+    }
+
+    @RequestMapping(value = "/startAllMikoBot")
+    public String viewConsole(ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("username") != null && session.getAttribute("username").equals("cowaug")) {
+            MainClass.main(null);
+            return "config";
+        } else {
+            session.setAttribute(REDIRECT_BACK, "startAllMikoBot");
             return "redirect:login";
         }
     }

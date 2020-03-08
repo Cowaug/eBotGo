@@ -1,19 +1,38 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" build-on-make="true" name="eBotGo:war exploded">
+  <artifact type="exploded-war" name="eBotGo:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/eBotGo_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="eBotGo" />
+          <element id="module-output" name="MikoBot" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.googlecode.soundlibs:mp3spi:1.9.5-1" />
+          <element id="library" level="project" name="Maven: com.googlecode.soundlibs:jlayer:1.0.1-1" />
+          <element id="library" level="project" name="Maven: com.googlecode.soundlibs:tritonus-share:0.3.7-1" />
+          <element id="library" level="project" name="Maven: net.dv8tion:JDA:4.0.0_56" />
+          <element id="library" level="project" name="Maven: com.neovisionaries:nv-websocket-client:2.9" />
+          <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:3.7.0" />
+          <element id="library" level="project" name="Maven: com.squareup.okio:okio:1.12.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-collections4:4.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.0.pr3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.0.pr3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.0.pr3" />
+          <element id="library" level="project" name="Maven: net.sf.trove4j:trove4j:3.0.3" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha1" />
+          <element id="library" level="project" name="Maven: com.sedmelluq:lavaplayer:1.3.25" />
+          <element id="library" level="project" name="Maven: com.vdurmont:emoji-java:5.1.1" />
+          <element id="library" level="project" name="Maven: org.json:json:20170516" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.6.2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.9" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.19" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material-components-web:4.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material__card:4.0.0-canary.1" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material__tab-bar:4.0.0-canary.1" />
-          <element id="library" level="project" name="Maven: org.webjars.npm:tslib:1.11.0" />
+          <element id="library" level="project" name="Maven: org.webjars.npm:tslib:1.11.1" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material__base:4.0.0-canary.1" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material__checkbox:4.0.0-canary.1" />
           <element id="library" level="project" name="Maven: org.webjars.npm:material__form-field:4.0.0-canary.1" />
@@ -69,6 +88,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.4.RELEASE" />
         </element>
       </element>
+      <element id="library" level="project" name="Maven: club.minnced:opus-java:1.0.4" />
       <element id="javaee-facet-resources" facet="eBotGo/web/Web" />
     </root>
   </artifact>

@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
+import java.util.Random;
 
 
 /**
@@ -42,15 +43,24 @@ public class JawMySQL {
 
     protected static String login(String userId, String password) throws SQLException {
         Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery("select username from ebotgo_user where userId = '" + userId + "' and passwords = '" + hashPassword(password.toCharArray(), SALT, 1024, 1024) + "'");
-//        ResultSet rs = st.executeQuery("select username from ebotgo_user where userId = '" + userId + "' and passwords = '" + password + "'");
-        try {
-            rs.next();
-            return rs.getString(1);
-        } catch (Exception ex) {
-            System.out.println("Login error:" + ex.getMessage());
-            return null;
-        }
+        ResultSet rs = st.executeQuery("select username from ebotgo_users where userId = '" + userId + "' and password = '" + hashPassword(password.toCharArray(), SALT, 1024, 1024) + "'");
+//       ResultSet rs = st.executeQuery("select username from ebotgo_user where userId = '" + userId + "' and passwords = '" + password + "'");
+        rs.next();
+        return rs.getString(1);
+    }
+
+    protected static String resetPassword(String userId, String registeredEmail) throws SQLException {
+        Statement st = connection.createStatement();
+        Random random = new Random();
+        String password = String.valueOf(random.nextLong()).replace("-", "");
+        return st.execute("update ebotgo_users set password ='" + hashPassword(password.toCharArray(), SALT, 1024, 1024) +
+                "' where userId = '" + userId + "' and email = '" + registeredEmail + "'") ? null : password;
+    }
+
+    protected static boolean changePassword(String userId, String oldPassword, String newPassword) throws SQLException {
+        Statement st = connection.createStatement();
+        return st.execute("update ebotgo_users set password ='" + hashPassword(newPassword.toCharArray(), SALT, 1024, 1024) +
+                "' where userId = '" + userId + "' and password = '" + hashPassword(oldPassword.toCharArray(), SALT, 1024, 1024) + "'"); //is error
     }
 
     /**
