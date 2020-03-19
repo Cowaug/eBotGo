@@ -49,9 +49,9 @@
         document.getElementById("btnLogin").style.textAlign = "left";
         document.getElementById("message").attributes.removeNamedItem("href");
         document.getElementById("message").style.color = "darkgreen";
-        document.getElementById("message").innerHTML="Checking identify of <strong>" + document.getElementById("user-id").value+"</strong>...";
+        document.getElementById("message").innerHTML="Checking identity of <strong>" + document.getElementById("user-id").value+"</strong>...";
         [].forEach.call(document.getElementsByClassName("mdl-textfield__input"),function (input) {
-            input.disabled = true;
+            input.readOnly = true; // set '.disable = true' will make parameter null
         });
     }
 </script>

@@ -1,0 +1,20 @@
+
+.framePadding{
+    padding: 8px;
+    text-align: center;
+    max-width:1024px;
+margin: 0 auto;
+}
+
+.textFieldStyle{
+    padding-bottom: 9px !important;
+    width: 100% !important;
+}
+
+.oversizeStyle{
+    text-align: left;white-space:nowrap;overflow: hidden;text-overflow: ellipsis;
+}
+
+html {
+    scroll-behavior: smooth;
+}

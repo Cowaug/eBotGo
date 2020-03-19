@@ -13,9 +13,6 @@ import java.sql.*;
 import java.util.Random;
 
 
-/**
- * Add functionality to reboot the bot on heroku without clearing user data
- */
 public class JawMySQL {
     private static byte[] SALT = System.getenv("SALT_CRYPTO").getBytes();
     private static String SKF = System.getenv("SKF");
@@ -31,9 +28,9 @@ public class JawMySQL {
                     String jdbUrl = "jdbc:mysql://" + jdbUri.getHost() + ":" + jdbUri.getPort() + jdbUri.getPath();
                     connection = DriverManager.getConnection(jdbUrl, jdbUri.getUserInfo().split(":")[0], jdbUri.getUserInfo().split(":")[1]);
                     System.out.println("Connection to database initialed!");
-                    System.out.println(connection);
                 } catch (SQLException | ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(".");
+//                    System.out.println(e.getMessage());
                 }
             }
         } catch (URISyntaxException e) {
@@ -41,41 +38,43 @@ public class JawMySQL {
         }
     }
 
-    protected static String login(String userId, String password) throws SQLException {
-        Statement st = connection.createStatement();
-        ResultSet rs = st.executeQuery("select username from ebotgo_users where userId = '" + userId + "' and password = '" + hashPassword(password.toCharArray(), SALT, 1024, 1024) + "'");
-//       ResultSet rs = st.executeQuery("select username from ebotgo_user where userId = '" + userId + "' and passwords = '" + password + "'");
-        rs.next();
-        return rs.getString(1);
+    protected static User login(String userId, String password) throws SQLException {
+        try (Statement st = connection.createStatement()) {
+            ResultSet rs = st.executeQuery("select username,permission from ebotgo_users where userId = '" + userId + "' and password = '" + hashPassword(password.toCharArray(), SALT) + "'");
+            return rs.next()? new User(userId,rs.getString(1), Integer.parseInt(rs.getString(2))):null;
+        }
     }
 
     protected static String resetPassword(String userId, String registeredEmail) throws SQLException {
-        Statement st = connection.createStatement();
-        Random random = new Random();
-        String password = String.valueOf(random.nextLong()).replace("-", "");
-        return st.execute("update ebotgo_users set password ='" + hashPassword(password.toCharArray(), SALT, 1024, 1024) +
-                "' where userId = '" + userId + "' and email = '" + registeredEmail + "'") ? null : password;
+        try (Statement st = connection.createStatement()) {
+            Random random = new Random();
+            String password = String.valueOf(random.nextLong()).replace("-", "");
+            return st.execute("update ebotgo_users set password ='" + hashPassword(password.toCharArray(), SALT) +
+                    "' where userId = '" + userId + "' and email = '" + registeredEmail + "'") ? null : password;
+        }
     }
 
     protected static boolean changePassword(String userId, String oldPassword, String newPassword) throws SQLException {
-        Statement st = connection.createStatement();
-        return st.execute("update ebotgo_users set password ='" + hashPassword(newPassword.toCharArray(), SALT, 1024, 1024) +
-                "' where userId = '" + userId + "' and password = '" + hashPassword(oldPassword.toCharArray(), SALT, 1024, 1024) + "'"); //is error
+        try (Statement st = connection.createStatement()) {
+            return st.executeQuery("select username from ebotgo_users where userId = '" + userId + "' and password = '" + hashPassword(oldPassword.toCharArray(), SALT) + "'").next() &&
+                    !st.execute("update ebotgo_users set password ='" + hashPassword(newPassword.toCharArray(), SALT) +
+                            "' where userId = '" + userId + "' and password = '" + hashPassword(oldPassword.toCharArray(), SALT) + "'");
+        }
     }
 
     /**
      * For creating default account in database
      *
-     * @return Hash password
+     * @return Hashed password
      */
     public static String hash(String password) {
-        return hashPassword(password.toCharArray(), SALT, 1024, 1024);
+        return hashPassword(password.toCharArray(), SALT);
     }
 
-    private static String hashPassword(final char[] password, final byte[] salt, final int iterations, final int keyLength) {
+    private static String hashPassword(final char[] password, final byte[] salt) {
         try {
             SecretKeyFactory skf = SecretKeyFactory.getInstance(SKF);
-            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
+            PBEKeySpec spec = new PBEKeySpec(password, salt, 1024, 1024);
             SecretKey key = skf.generateSecret(spec);
             byte[] res = key.getEncoded();
             return Hex.encodeHexString(res);

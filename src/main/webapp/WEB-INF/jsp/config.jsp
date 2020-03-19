@@ -13,5 +13,6 @@
 </head>
 <body>
 <h1>${data}</h1>
+<h5><a href="${pageContext.request.contextPath}/home">Home</a></h5>
 </body>
 </html>
