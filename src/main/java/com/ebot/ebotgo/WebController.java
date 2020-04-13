@@ -2,6 +2,7 @@ package com.ebot.ebotgo;
 
 
 import com.ebot.MikoBot.MainClass;
+import com.github.javafaker.Faker;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,10 @@ import javax.servlet.http.HttpSession;
 public class WebController {
     public static final String USER_INFO = "sr_nf";
     public static final String REDIRECT_BACK = "rdrct_bck";
+    static {
+        new JawMySQL();
+        MainClass.main(null);
+    }
 
     @RequestMapping(value = "/home")
     public String viewHome(ModelMap modelMap, HttpServletRequest request) {
@@ -22,7 +27,8 @@ public class WebController {
             User user = (User) request.getSession().getAttribute(USER_INFO);
             modelMap.addAttribute("username", user.getUsername());
         } catch (NullPointerException ignored) {
-            modelMap.addAttribute("username", request.getSession().getId());
+            Faker faker = new Faker();
+            modelMap.addAttribute("username", faker.name().fullName());//todo
         }
         return "home";
     }

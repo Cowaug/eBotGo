@@ -12,7 +12,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.Random;
 
-
 public class JawMySQL {
     private static byte[] SALT = System.getenv("SALT_CRYPTO").getBytes();
     private static String SKF = System.getenv("SKF");
