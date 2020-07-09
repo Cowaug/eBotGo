@@ -20,6 +20,9 @@
     %>
     <li>
         <h5><a href="${pageContext.request.contextPath}/login">Login</a></h5>
+        <h5><a href="${pageContext.request.contextPath}/login2">Login 2</a></h5>
+        <h5><a href="${pageContext.request.contextPath}/login3">Login 3</a></h5>
+        <h5><a href="${pageContext.request.contextPath}/login4">Login Safe</a></h5>
     </li>
     <%
     } else {

@@ -1,12 +1,18 @@
 package com.ebot.ebotgo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-
+@Service
 public class EmailResetPassword {
+    @Autowired
+    JawMySQL jawMySQL;
+
     private final String username = System.getenv("email");
     private final String password = System.getenv("email_password");
 
@@ -20,7 +26,7 @@ public class EmailResetPassword {
     }
 
     public void sendPasswordResetEmail(String userId,String registeredEmail) throws Exception {
-        String newPassword = JawMySQL.resetPassword(userId,registeredEmail);
+        String newPassword = jawMySQL.resetPassword(userId,registeredEmail);
         if(newPassword ==null) return;
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {

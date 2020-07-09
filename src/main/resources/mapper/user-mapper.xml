@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper">
+
+    <select id="login" parameterType="java.lang.Object" resultMap="UserMap">
+        SELECT username, userId, permission FROM ebotgo_users WHERE userId = '${array[0]}' AND password = '${array[1]}';
+    </select>
+
+    <select id="login2" parameterType="java.lang.Object" resultMap="UserMap">
+        SELECT username,userId, permission
+        FROM ebotgo_users
+        WHERE userId = '${array[0]}'
+        AND password = '${array[1]}'
+    </select>
+
+    <select id="login3" parameterType="java.lang.Object" resultMap="UserMap">
+        SELECT username,userId, permission
+        FROM ebotgo_users
+        WHERE userId = #{array[0]}
+        AND password = #{array[1]}
+    </select>
+
+
+    <update id="resetPassword" parameterType="java.lang.Object">
+        UPDATE ebotgo_users
+        SET password = '${array[0]}'
+        WHERE userId = '${array[1]}'
+        AND email = '${array[2]}'
+    </update>
+
+    <update id="changePassword" parameterType="java.lang.Object">
+        UPDATE ebotgo_users
+        SET password = '${array[0]}'
+        WHERE userId = '${array[1]}'
+        AND password = '${array[2]}'
+    </update>
+
+
+
+    <resultMap id="UserMap" type="com.ebot.ebotgo.User">
+        <result property="username" column="username"/>
+        <result property="userId" column="userId"/>
+        <result property="permission" column="permission"/>
+    </resultMap>
+
+</mapper>

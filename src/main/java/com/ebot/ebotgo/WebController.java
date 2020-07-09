@@ -1,8 +1,9 @@
 package com.ebot.ebotgo;
 
 
-import com.ebot.MikoBot.MainClass;
+//import com.ebot.MikoBot.MainClass;
 import com.github.javafaker.Faker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +15,13 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class WebController {
+    @Autowired
+    JawMySQL jawMySQL;
+
     public static final String USER_INFO = "sr_nf";
     public static final String REDIRECT_BACK = "rdrct_bck";
-    static {
-        new JawMySQL();
-        MainClass.main(null);
-    }
 
-    @RequestMapping(value = "/home")
+    @RequestMapping({"/","/home"})
     public String viewHome(ModelMap modelMap, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute(USER_INFO);
@@ -32,6 +32,8 @@ public class WebController {
         }
         return "home";
     }
+
+    //LOGIN 1
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String viewLogin(ModelMap modelMap, HttpServletRequest request) {
@@ -49,7 +51,7 @@ public class WebController {
     public String viewLoginPOST(ModelMap modelMap, HttpServletRequest request) {
         try {
             // authentication
-            User user = JawMySQL.login(request.getParameter("user-id"), request.getParameter("password"));
+            User user = jawMySQL.login(request.getParameter("user-id"), request.getParameter("password"));
 
             if (user != null) {
                 request.getSession().setAttribute(USER_INFO, user);
@@ -64,6 +66,110 @@ public class WebController {
         modelMap.addAttribute("color", "darkred");
         return "login";
     }
+
+    //LOGIN 2
+
+    @RequestMapping(value = "/login2", method = RequestMethod.GET)
+    public String viewLogin2(ModelMap modelMap, HttpServletRequest request) {
+        User user;
+        if ((user = (User) request.getSession().getAttribute(USER_INFO)) != null) {
+            return "redirect:" + (request.getHeader("referer") != null ? request.getHeader("referer") : "home");
+        } else {
+            modelMap.addAttribute("message", "Give me new password :>");
+            modelMap.addAttribute("color", "dimgray");
+            return "login2";
+        }
+    }
+
+    @RequestMapping(value = "/login2", method = RequestMethod.POST)
+    public String viewLogin2POST(ModelMap modelMap, HttpServletRequest request) {
+        try {
+            // authentication
+            User user = jawMySQL.login2(request.getParameter("user-id"), request.getParameter("password"));
+
+            if (user != null) {
+                request.getSession().setAttribute(USER_INFO, user);
+                return "redirect:" + (request.getSession().getAttribute(REDIRECT_BACK) == null ? "home" : request.getSession().getAttribute(REDIRECT_BACK));
+            }
+            modelMap.addAttribute("message", "Forgot <strong>User ID</strong> or <strong>Password</strong>?");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            modelMap.addAttribute("message", "Server issue :< Please try again");
+            System.out.println("Login error: " + ex.getMessage());
+        }
+        modelMap.addAttribute("color", "darkred");
+        return "login2";
+    }
+
+    //LOGIN 3
+
+    @RequestMapping(value = "/login3", method = RequestMethod.GET)
+    public String viewLogin3(ModelMap modelMap, HttpServletRequest request) {
+        User user;
+        if ((user = (User) request.getSession().getAttribute(USER_INFO)) != null) {
+            return "redirect:" + (request.getHeader("referer") != null ? request.getHeader("referer") : "home");
+        } else {
+            modelMap.addAttribute("message", "Give me new password :>");
+            modelMap.addAttribute("color", "dimgray");
+            return "login3";
+        }
+    }
+
+    @RequestMapping(value = "/login3", method = RequestMethod.POST)
+    public String viewLogin3POST(ModelMap modelMap, HttpServletRequest request) {
+        try {
+            // authentication
+            User user = jawMySQL.login3(request.getParameter("user-id"), request.getParameter("password"));
+
+            if (user != null) {
+                request.getSession().setAttribute(USER_INFO, user);
+                return "redirect:" + (request.getSession().getAttribute(REDIRECT_BACK) == null ? "home" : request.getSession().getAttribute(REDIRECT_BACK));
+            }
+            modelMap.addAttribute("message", "Forgot <strong>User ID</strong> or <strong>Password</strong>?");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            modelMap.addAttribute("message", "Server issue :< Please try again");
+            System.out.println("Login error: " + ex.getMessage());
+        }
+        modelMap.addAttribute("color", "darkred");
+        return "login3";
+    }
+
+    //LOGIN 3
+
+    @RequestMapping(value = "/login4", method = RequestMethod.GET)
+    public String viewLogin4(ModelMap modelMap, HttpServletRequest request) {
+        User user;
+        if ((user = (User) request.getSession().getAttribute(USER_INFO)) != null) {
+            return "redirect:" + (request.getHeader("referer") != null ? request.getHeader("referer") : "home");
+        } else {
+            modelMap.addAttribute("message", "Give me new password :>");
+            modelMap.addAttribute("color", "dimgray");
+            return "login4";
+        }
+    }
+
+    @RequestMapping(value = "/login4", method = RequestMethod.POST)
+    public String viewLogin4POST(ModelMap modelMap, HttpServletRequest request) {
+        try {
+            // authentication
+            User user = jawMySQL.login3(request.getParameter("user-id"), request.getParameter("password"));
+
+            if (user != null) {
+                request.getSession().setAttribute(USER_INFO, user);
+                return "redirect:" + (request.getSession().getAttribute(REDIRECT_BACK) == null ? "home" : request.getSession().getAttribute(REDIRECT_BACK));
+            }
+            modelMap.addAttribute("message", "Forgot <strong>User ID</strong> or <strong>Password</strong>?");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            modelMap.addAttribute("message", "Server issue :< Please try again");
+            System.out.println("Login error: " + ex.getMessage());
+        }
+        modelMap.addAttribute("color", "darkred");
+        return "login4";
+    }
+
+    //
 
     @RequestMapping(value = "/logout")
     public String viewLogout(HttpServletRequest request) {
@@ -104,10 +210,10 @@ public class WebController {
         if ((user = (User) request.getSession().getAttribute(USER_INFO)) != null) {
             if (request.getParameter("newPassword").equals(request.getParameter("newPassword2")))
                 try {
-                    if (JawMySQL.changePassword(
+                    if (jawMySQL.changePassword(
                             user.getUserId(),
                             request.getParameter("oldPassword"),
-                            request.getParameter("newPassword")))
+                            request.getParameter("newPassword")) == 1)
                         return "redirect:/home";
                 } catch (Exception e) {
                     System.out.println("Change password: " + e.getMessage());
@@ -137,56 +243,4 @@ public class WebController {
             return "redirect:login";
         }
     }
-
-    @RequestMapping(value = "/startAllMikoBot")
-    public String viewConsole(ModelMap modelMap, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        User user;
-        if ((user = (User) request.getSession().getAttribute(USER_INFO)) != null) {
-
-            if (user.getPermission() > 5) {
-                MainClass.main(null);
-                modelMap.addAttribute("data","Bot started");
-                return "config";
-            } else{
-                modelMap.addAttribute("data","I don't know you :) so nope :P");
-                return "config";
-            }
-        } else {
-            session.setAttribute(REDIRECT_BACK, "startAllMikoBot");
-            return "redirect:login";
-        }
-    }
-
-    @RequestMapping(value = "/about")
-    public String viewAbout() {
-        return "eBotSite/about";
-    }
-
-    @RequestMapping(value = "/citation-tools")
-    public String viewCitation() {
-        return "eBotSite/citation-tools";
-    }
-
-    @RequestMapping(value = {"/", "/index"})
-    public String viewIndex() {
-        return "eBotSite/index";
-    }
-
-    @RequestMapping(value = "/miko-bot")
-    public String viewMikoBot() {
-        return "eBotSite/miko-bot";
-    }
-
-    @RequestMapping(value = "/mcsl")
-    public String viewMCSL() {
-        return "eBotSite/minecraft-server-launcher";
-    }
-
-    @RequestMapping(value = "/projects")
-    public String viewProjects() {
-        return "eBotSite/projects";
-    }
-
-
 }
