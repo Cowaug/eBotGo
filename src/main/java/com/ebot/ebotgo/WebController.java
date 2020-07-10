@@ -153,7 +153,7 @@ public class WebController {
     public String viewLogin4POST(ModelMap modelMap, HttpServletRequest request) {
         try {
             // authentication
-            User user = jawMySQL.login3(request.getParameter("user-id"), request.getParameter("password"));
+            User user = jawMySQL.login4(request.getParameter("user-id"), request.getParameter("password"));
 
             if (user != null) {
                 request.getSession().setAttribute(USER_INFO, user);
